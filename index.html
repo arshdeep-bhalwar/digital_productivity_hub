@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Productivity Hub | Personal Student Operating System</title>
+  <meta name="description"
+    content="Personal student productivity operating system: brain dump task extraction, smart day planning, focus timer, goal tracking, habit streaks, and Gemini assistant.">
+  <link rel="stylesheet" href="index.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <!-- Floating Aurora Scroll Progress Bar -->
+  <div id="scroll-progress-bar"></div>
+
+  <!-- Application Header (Clean Balanced Layout: Logo Left | Nav Center | Login Right) -->
+  <header class="app-header">
+    <!-- Brand Logo on Left -->
+    <a href="#" class="brand" data-target="view-home">
+      <div class="brand-icon"><i data-lucide="sparkles"></i></div>
+      <span>Digital Productivity Hub</span>
+    </a>
+
+    <!-- Navigation Tabs in Center -->
+    <nav class="header-nav">
+      <ul class="nav-links">
+        <li><button class="nav-btn active" data-target="view-home"><i data-lucide="home"></i> Home</button></li>
+        <li><button class="nav-btn" data-target="view-brain-dump"><i data-lucide="brain"></i> Brain Dump</button></li>
+        <li><button class="nav-btn" data-target="view-tasks"><i data-lucide="check-square"></i> Tasks</button></li>
+        <li><button class="nav-btn" data-target="view-planner"><i data-lucide="calendar"></i> Planner</button></li>
+        <li><button class="nav-btn" data-target="view-focus"><i data-lucide="timer"></i> Focus</button></li>
+        <li><button class="nav-btn" data-target="view-projects"><i data-lucide="target"></i> Projects</button></li>
+        <li><button class="nav-btn" data-target="view-habits"><i data-lucide="flame"></i> Habits</button></li>
+        <li><button class="nav-btn" data-target="view-analytics"><i data-lucide="bar-chart-2"></i> Analytics</button>
+        </li>
+        <li><button class="nav-btn" data-target="view-assistant"><i data-lucide="bot"></i> AI Assistant</button></li>
+      </ul>
+    </nav>
+
+    <!-- Account / Login Button on Right -->
+    <div class="user-badge" id="user-badge-container">
+      <button class="btn btn-secondary" id="btn-auth-action" style="padding: 0.45rem 1rem; font-size: 0.85rem;">
+        <i data-lucide="user-check"></i> <span id="user-email-display">Sign In</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main View Router Container -->
+  <main class="app-main">
+
+    <!-- 0. HOME LANDING VIEW (Nordic Aurora Aesthetic with Split-Screen & Scroll Animations) -->
+    <section id="view-home" class="view-section active">
+
+      <!-- HERO BANNER (Split-Screen) -->
+      <div class="hero-container">
+        <div class="hero-content">
+          <div class="hero-tag">
+            <i data-lucide="sparkles"></i> All-In-One Student Productivity System
+          </div>
+          <h1 class="hero-title">
+            Transform Scattered Homework & Exams Into <span class="gradient-text">Clear, Daily Action Plans</span>
+          </h1>
+          <p class="hero-subtitle">
+            Digital Productivity Hub helps students organize assignment deadlines, study schedules, and daily habits in
+            one simple place. AI organizes your unorganized notes into real tasks, calculates what needs your focus
+            first, and creates balanced daily timetables with built-in rest breaks.
+          </p>
+
+          <!-- 4-Feature Highlights Grid in Simple Words -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 0.25rem 0 0.75rem 0;">
+            <div
+              style="padding: 0.65rem 0.85rem; background: rgba(10,22,40,0.75); border: 1px solid rgba(0,255,135,0.25); border-radius: var(--radius-sm); font-size: 0.82rem; color: rgba(232,244,248,0.9); display: flex; align-items: center; gap: 0.5rem;">
+              <i data-lucide="brain" style="color: var(--aurora-green); flex-shrink: 0;"></i> <span><strong>AI Brain
+                  Dump:</strong> Turn messy notes into structured tasks</span>
+            </div>
+            <div
+              style="padding: 0.65rem 0.85rem; background: rgba(10,22,40,0.75); border: 1px solid rgba(0,212,255,0.25); border-radius: var(--radius-sm); font-size: 0.82rem; color: rgba(232,244,248,0.9); display: flex; align-items: center; gap: 0.5rem;">
+              <i data-lucide="shield-check" style="color: var(--ice-cyan); flex-shrink: 0;"></i> <span><strong>Priority
+                  Score:</strong> Always know what to study first (0–100)</span>
+            </div>
+            <div
+              style="padding: 0.65rem 0.85rem; background: rgba(10,22,40,0.75); border: 1px solid rgba(123,47,190,0.35); border-radius: var(--radius-sm); font-size: 0.82rem; color: rgba(232,244,248,0.9); display: flex; align-items: center; gap: 0.5rem;">
+              <i data-lucide="calendar" style="color: #B37DFF; flex-shrink: 0;"></i> <span><strong>Day Planner:</strong>
+                Auto-schedules tasks with rest breaks</span>
+            </div>
+            <div
+              style="padding: 0.65rem 0.85rem; background: rgba(10,22,40,0.75); border: 1px solid rgba(255,110,199,0.35); border-radius: var(--radius-sm); font-size: 0.82rem; color: rgba(232,244,248,0.9); display: flex; align-items: center; gap: 0.5rem;">
+              <i data-lucide="flame" style="color: var(--glacier-pink); flex-shrink: 0;"></i> <span><strong>Habits &
+                  Focus:</strong> Track study streaks & timer logs</span>
+            </div>
+          </div>
+
+          <div class="hero-actions">
+            <button class="btn btn-primary" id="btn-hero-launch">
+              <i data-lucide="rocket"></i> Launch Workspace
+            </button>
+            <button class="btn btn-secondary" id="btn-hero-login">
+              <i data-lucide="user-check"></i> Sign In / Register
+            </button>
+          </div>
+        </div>
+
+        <div class="hero-visual-card">
+          <div
+            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; z-index: 2; position: relative;">
+            <span class="badge badge-low"><i data-lucide="activity"></i> System Operational</span>
+            <span class="score-indicator">Priority Engine: 100% Deterministic</span>
+          </div>
+
+          <div
+            style="background: rgba(5,11,26,0.85); border: 1px solid var(--surface-border); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1rem; z-index: 2; position: relative;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span style="font-weight: 700; color: var(--snow);">DBMS Lab Assignment</span>
+              <span class="badge badge-critical">Critical Risk</span>
+            </div>
+            <div style="font-size: 0.8rem; color: rgba(232,244,248,0.7);">
+              Score: <strong style="color: var(--aurora-green);">94/100</strong> &bull; Deadline: Tomorrow 5:00 PM
+              &bull; Work: 3h remaining
+            </div>
+          </div>
+
+          <div
+            style="background: rgba(5,11,26,0.85); border: 1px solid var(--surface-border); border-radius: var(--radius-md); padding: 1.25rem; z-index: 2; position: relative;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span style="font-weight: 700; color: var(--snow);">Java Viva Preparation</span>
+              <span class="badge badge-high">High Priority</span>
+            </div>
+            <div style="font-size: 0.8rem; color: rgba(232,244,248,0.7);">
+              Score: <strong style="color: var(--ice-cyan);">78/100</strong> &bull; Scheduled Focus Block: 9:00 AM -
+              10:30 AM
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCROLL ANIMATION FEATURE SECTIONS (Zig-zag Grid) -->
+      <div class="features-wrapper">
+        <div class="section-header scroll-reveal">
+          <h2 class="section-title">Built for Student Decision Support</h2>
+          <p style="color: rgba(232,244,248,0.7); max-width: 60ch; margin: 0 auto;">
+            From scattered lecture notes to focused execution. One system that connects capture, prioritization,
+            planning, and focus.
+          </p>
+        </div>
+
+        <!-- Feature 1: Brain Dump -->
+        <div class="feature-row scroll-reveal">
+          <div class="feature-text">
+            <span class="feature-num">01 / CAPTURE</span>
+            <h3 class="feature-heading">Gemini AI Brain Dump</h3>
+            <p class="feature-desc">
+              Paste messy thoughts, assignment reminders, or syllabus deadlines. Gemini extracts structured candidate
+              tasks with priority ratings and time estimates for your explicit confirmation.
+            </p>
+            <button class="btn btn-secondary" style="width: fit-content;" onclick="switchToTab('view-brain-dump')">
+              <i data-lucide="brain"></i> Try Brain Dump
+            </button>
+          </div>
+          <div class="card" style="margin: 0; background: rgba(10,22,40,0.85);">
+            <div
+              style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--aurora-green); margin-bottom: 0.5rem;">
+              <i data-lucide="sparkles"></i> AI Candidate Extractor
+            </div>
+            <p style="font-size: 0.9rem; color: rgba(232,244,248,0.8); font-style: italic;">
+              "Need to finish DBMS Assignment by tomorrow 5pm, study for Java viva this Friday..."
+            </p>
+            <div
+              style="margin-top: 1rem; padding: 0.75rem; background: rgba(5,11,26,0.8); border-radius: var(--radius-sm); border: 1px solid var(--surface-border);">
+              <strong>Extracted Task:</strong> DBMS Assignment [Academic &bull; High Priority &bull; 120m]
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 2: Priority Engine -->
+        <div class="feature-row reverse scroll-reveal">
+          <div class="card" style="margin: 0; background: rgba(10,22,40,0.85);">
+            <div
+              style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--ice-cyan); margin-bottom: 0.5rem;">
+              <i data-lucide="shield-check"></i> Deterministic Scoring Formula
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+              <div style="display: flex; justify-content: space-between;">
+                <span>Deadline Proximity (40%)</span>
+                <span style="color: var(--aurora-green);">+38 pts</span>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span>Importance Weight (30%)</span>
+                <span style="color: var(--ice-cyan);">+25 pts</span>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span>Workload Estimate (20%)</span>
+                <span style="color: var(--glacier-pink);">+18 pts</span>
+              </div>
+            </div>
+          </div>
+          <div class="feature-text">
+            <span class="feature-num">02 / PRIORITIZE</span>
+            <h3 class="feature-heading">Deterministic Priority Matrix</h3>
+            <p class="feature-desc">
+              Zero black-box AI guessing for task ordering. Pure mathematical scoring evaluates deadline proximity,
+              importance weight, and task age to compute an explainable 0–100 priority score.
+            </p>
+            <button class="btn btn-secondary" style="width: fit-content;" onclick="switchToTab('view-tasks')">
+              <i data-lucide="check-square"></i> View Priority Matrix
+            </button>
+          </div>
+        </div>
+
+        <!-- Feature 3: Smart Day Planner & Focus -->
+        <div class="feature-row scroll-reveal">
+          <div class="feature-text">
+            <span class="feature-num">03 / PLAN & FOCUS</span>
+            <h3 class="feature-heading">Smart Daily Planner & Focus Timer</h3>
+            <p class="feature-desc">
+              Allocate daily focus minutes realistically. Automated 10-minute break buffers between scheduled task
+              blocks prevent burnout, while the integrated Pomodoro timer logs active focus sessions.
+            </p>
+            <button class="btn btn-secondary" style="width: fit-content;" onclick="switchToTab('view-planner')">
+              <i data-lucide="calendar"></i> View Day Planner
+            </button>
+          </div>
+          <div class="card" style="margin: 0; background: rgba(10,22,40,0.85);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <span style="font-weight: 700; color: var(--snow);"><i data-lucide="clock"></i> 9:00 AM - 11:00 AM</span>
+              <span class="badge badge-low">Focus Block</span>
+            </div>
+            <div style="font-size: 0.9rem; color: var(--aurora-green); margin-bottom: 0.75rem;">DBMS Lab Assignment (120
+              mins)</div>
+            <div
+              style="padding: 0.5rem 0.75rem; background: rgba(0,212,255,0.1); border-radius: var(--radius-sm); font-size: 0.8rem; color: var(--ice-cyan);">
+              ☕ 10-Minute Break Buffer (11:00 AM - 11:10 AM)
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 4: Analytics & DNA -->
+        <div class="feature-row reverse scroll-reveal">
+          <div class="card" style="margin: 0; background: rgba(10,22,40,0.85);">
+            <div style="display: flex; justify-content: space-around; text-align: center;">
+              <div>
+                <div
+                  style="font-size: 2rem; font-weight: 800; font-family: var(--font-mono); color: var(--aurora-green);">
+                  88/100</div>
+                <div style="font-size: 0.75rem; color: rgba(232,244,248,0.7);">Productivity Score</div>
+              </div>
+              <div>
+                <div style="font-size: 2rem; font-weight: 800; font-family: var(--font-mono); color: var(--ice-cyan);">
+                  14.5h</div>
+                <div style="font-size: 0.75rem; color: rgba(232,244,248,0.7);">Weekly Focus</div>
+              </div>
+            </div>
+          </div>
+          <div class="feature-text">
+            <span class="feature-num">04 / MEASURE</span>
+            <h3 class="feature-heading">Productivity Analytics & DNA</h3>
+            <p class="feature-desc">
+              Understand observable execution patterns. Measures task completion rate, focus consistency, deadline risk
+              management, and habit streaks from stored database records.
+            </p>
+            <button class="btn btn-secondary" style="width: fit-content;" onclick="switchToTab('view-analytics')">
+              <i data-lucide="bar-chart-2"></i> View Analytics
+            </button>
+          </div>
+        </div>
+
+        <!-- BOTTOM WORKSPACE BANNER CTA -->
+        <div class="card scroll-reveal"
+          style="text-align: center; padding: 3rem 2rem; background: linear-gradient(135deg, rgba(123,47,190,0.2), rgba(0,255,135,0.15)); border-color: rgba(0,255,135,0.3);">
+          <h3 style="font-size: 1.85rem; font-weight: 800; color: var(--snow); margin-bottom: 0.75rem;">
+            Ready to Master Your Student Productivity?
+          </h3>
+          <p style="color: rgba(232,244,248,0.8); max-width: 50ch; margin: 0 auto 1.5rem auto;">
+            Launch your personal productivity workspace now or sign in to save data directly to your cloud Supabase
+            database.
+          </p>
+          <button class="btn btn-primary" onclick="switchToTab('view-brain-dump')">
+            <i data-lucide="rocket"></i> Launch Workspace Now
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 1. BRAIN DUMP VIEW -->
+    <section id="view-brain-dump" class="view-section">
+      <!-- GUEST DEMO MODE AUTH BANNER -->
+      <div class="auth-guest-banner hidden" style="background: rgba(10,22,40,0.85); border: 1px solid rgba(0,212,255,0.3); border-radius: var(--radius-md); padding: 0.75rem 1.25rem; margin-bottom: 1.25rem; font-size: 0.88rem; color: rgba(232,244,248,0.9); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+        <span>🔒 <strong>Guest Demo Mode:</strong> Data is currently stored locally. Sign in or register to sync your tasks directly to Supabase Cloud.</span>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-secondary" style="padding: 0.35rem 0.85rem; font-size: 0.8rem;" onclick="openAuthModal('login')"><i data-lucide="log-in"></i> Sign In</button>
+          <button class="btn btn-primary" style="padding: 0.35rem 0.85rem; font-size: 0.8rem;" onclick="openAuthModal('register')"><i data-lucide="user-plus"></i> Register</button>
+        </div>
+      </div>
+
+      <!-- STEP-BY-STEP TAB HEADER CARD -->
+      <div class="tab-header-card">
+        <div class="tab-header-top">
+          <div>
+            <span class="tab-header-tag"><i data-lucide="brain"></i> Gemini AI Task Extractor</span>
+            <h2 class="tab-header-title">Turn Messy Notes & Homework Into Clear Tasks</h2>
+          </div>
+          <div class="tab-badges">
+            <span class="badge badge-low"><i data-lucide="sparkles"></i> Gemini 2.5 AI Engine</span>
+            <span class="badge badge-medium"><i data-lucide="shield-check"></i> Safe Review Mode</span>
+          </div>
+        </div>
+
+        <p class="tab-header-desc">
+          Paste rough lecture notes, assignment deadlines, syllabus text, or quick thoughts below. Gemini AI reads your
+          text, finds your tasks, estimates how long they will take, and assigns priority levels for your review.
+        </p>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-num">Step 1</span>
+            <div class="step-title">Paste Notes or Homework</div>
+            <div class="step-desc">Type or paste messy notes into the text box below.</div>
+          </div>
+          <div class="step-card">
+            <span class="step-num">Step 2</span>
+            <div class="step-title">Click Process with Gemini</div>
+            <div class="step-desc">AI extracts task titles, deadlines, categories & time estimates.</div>
+          </div>
+          <div class="step-card">
+            <span class="step-num">Step 3</span>
+            <div class="step-title">Save to Task Manager</div>
+            <div class="step-desc">Review suggested tasks and click "Save Selected Tasks".</div>
+          </div>
+        </div>
+
+        <div class="tab-footer-tips">
+          <span>💡 <strong>Tip:</strong> Mention dates like "tomorrow 5pm", "this Friday", or "next week".</span>
+          <span>🔒 <strong>Data Safety:</strong> Tasks are saved to your database only after you click "Save Selected
+            Tasks".</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="form-group">
+          <label class="form-label">Input Your Raw Notes, Assignments or Thoughts</label>
+          <textarea id="brain-dump-input" class="form-textarea"
+            placeholder="e.g. Need to finish DBMS Assignment by tomorrow 5pm, study for Java viva this Friday, register for hackathon by next week..."></textarea>
+        </div>
+
+        <!-- Clickable Sample Presets for Quick Testing -->
+        <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap;">
+          <span style="font-size: 0.8rem; color: rgba(232,244,248,0.7); font-weight: 600;">Try Quick Sample:</span>
+          <button type="button" class="btn btn-secondary" style="padding: 0.25rem 0.65rem; font-size: 0.78rem;"
+            onclick="document.getElementById('brain-dump-input').value = 'Need to finish DBMS Assignment by tomorrow 5pm, study for Java viva this Friday, register for campus hackathon next Monday...'">
+            <i data-lucide="sparkles"></i> Homework & Exams Sample
+          </button>
+          <button type="button" class="btn btn-secondary" style="padding: 0.25rem 0.65rem; font-size: 0.78rem;"
+            onclick="document.getElementById('brain-dump-input').value = 'Prepare slides for Web Dev presentation by Thursday, buy lab notebook today, submit project proposal by Friday 6pm...'">
+            <i data-lucide="sparkles"></i> Group Project Sample
+          </button>
+        </div>
+
+        <div class="flex-between">
+          <button id="btn-process-brain-dump" class="btn btn-primary"><i data-lucide="sparkles"></i> Process Brain Dump
+            with Gemini</button>
+          <span id="brain-dump-status" style="font-size: 0.85rem; color: var(--ice-cyan);"></span>
+        </div>
+      </div>
+
+      <div id="brain-dump-results" class="card hidden">
+        <h3 class="card-title"><i data-lucide="list-checks"></i> Task Extraction Candidates</h3>
+        <p class="card-subtitle">Review suggested tasks before saving to your workload.</p>
+        <div id="brain-dump-candidate-list" class="task-grid mt-2"></div>
+        <div class="mt-2 text-right">
+          <button id="btn-confirm-brain-dump-tasks" class="btn btn-primary"><i data-lucide="save"></i> Save Selected
+            Tasks to Task Manager</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. TASK MANAGER VIEW -->
+    <section id="view-tasks" class="view-section">
+      <!-- GUEST DEMO MODE AUTH BANNER -->
+      <div class="auth-guest-banner hidden" style="background: rgba(10,22,40,0.85); border: 1px solid rgba(0,212,255,0.3); border-radius: var(--radius-md); padding: 0.75rem 1.25rem; margin-bottom: 1.25rem; font-size: 0.88rem; color: rgba(232,244,248,0.9); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+        <span>🔒 <strong>Guest Demo Mode:</strong> Data is currently stored locally. Sign in or register to sync your tasks directly to Supabase Cloud.</span>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-secondary" style="padding: 0.35rem 0.85rem; font-size: 0.8rem;" onclick="openAuthModal('login')"><i data-lucide="log-in"></i> Sign In</button>
+          <button class="btn btn-primary" style="padding: 0.35rem 0.85rem; font-size: 0.8rem;" onclick="openAuthModal('register')"><i data-lucide="user-plus"></i> Register</button>
+        </div>
+      </div>
+
+      <!-- STEP-BY-STEP TAB HEADER CARD -->
+      <div class="tab-header-card">
+        <div class="tab-header-top">
+          <div>
+            <span class="tab-header-tag"><i data-lucide="check-square"></i> Priority Decision Matrix</span>
+            <h2 class="tab-header-title">Smart Workload Manager & Priority Matrix</h2>
+          </div>
+          <div class="tab-badges">
+            <span class="badge badge-low"><i data-lucide="shield-check"></i> 100% Rule Engine</span>
+            <span class="badge badge-high"><i data-lucide="alert-triangle"></i> Risk Calculator</span>
+          </div>
+        </div>
+
+        <p class="tab-header-desc">
+          Organize all your study tasks, assignments, and personal goals in one clean list. Every task gets a
+          transparent 0–100 Priority Score computed from deadline proximity, importance weight, and workload size.
+        </p>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-num">Step 1</span>
+            <div class="step-title">Add Tasks</div>
+            <div class="step-desc">Create tasks manually or import them from AI Brain Dump.</div>
+          </div>
+          <div class="step-card">
+            <span class="step-num">Step 2</span>
+            <div class="step-title">Filter & Sort</div>
+            <div class="step-desc">Filter by Academic, Project, Career, or Personal categories.</div>
+          </div>
+          <div class="step-card">
+            <span class="step-num">Step 3</span>
+            <div class="step-title">Focus on High Scores</div>
+            <div class="step-desc">Work on high 0–100 Priority Score tasks first to avoid rush.</div>
+          </div>
+        </div>
+
+        <div class="tab-footer-tips">
+          <span>📊 <strong>Score Formula:</strong> Proximity (40%) + Priority Level (30%) + Workload Size (20%) + Task
+            Age (10%).</span>
+          <span>⚠️ <strong>Risk Alert:</strong> High/Critical Risk is triggered if task work > your available daily
+            focus time.</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="flex-between mb-2">
+          <div>
+            <h3 style="color: var(--snow); font-size: 1.15rem; font-weight: 700;">Active Task Workload</h3>
+            <p class="card-subtitle" style="margin-bottom:0;">Filterable list ordered by priority score.</p>
+          </div>
+          <button id="btn-open-create-task" class="btn btn-primary"><i data-lucide="plus"></i> Add New Task</button>
+        </div>
+
+        <div id="task-list-container" class="task-grid">
+          <!-- Dynamically populated tasks -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. SMART DAY PLANNER VIEW -->
+    <section id="view-planner" class="view-section">
+      <!-- GUEST DEMO MODE AUTH BANNER -->
+      <div class="auth-guest-banner hidden" style="background: rgba(10,22,40,0.85); border: 1px solid rgba(0,212,255,0.3); border-radius: var(--radius-md); padding: 0.75rem 1.25rem; margin-bottom: 1.25rem; font-size: 0.88rem; color: rgba(232,244,248,0.9); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+        <span>🔒 <strong>Guest Demo Mode:</strong> Data is currently stored locally. Sign in or register to sync your schedule directly to Supabase Cloud.</span>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-secondary" style="padding: 0.35rem 0.85rem; font-size: 0.8rem;" onclick="openAuthModal('login')"><i data-lucide="log-in"></i> Sign In</button>
+          <button class="btn btn-primary" style="padding: 0.35rem 0.85rem; font-size: 0.8rem;" onclick="openAuthModal('register')"><i data-lucide="user-plus"></i> Register</button>
+        </div>
+      </div>
+
+      <!-- STEP-BY-STEP TAB HEADER CARD -->
+      <div class="tab-header-card">
+        <div class="tab-header-top">
+          <div>
+            <span class="tab-header-tag"><i data-lucide="calendar"></i> Automated Study Schedule</span>
+            <h2 class="tab-header-title">Smart Daily Planner & Break Buffer Generator</h2>
+          </div>
+          <div class="tab-badges">
+            <span class="badge badge-low"><i data-lucide="coffee"></i> 10-Min Rest Buffers</span>
+            <span class="badge badge-medium"><i data-lucide="clock"></i> Capacity Capped</span>
+          </div>
+        </div>
+
+        <p class="tab-header-desc">
+          Convert your daily focus capacity into a realistic timetable. Enter your available focus hours today, and the
+          planner automatically schedules your highest priority tasks with 10-minute rest buffers to prevent study
+          burnout.
+        </p>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-num">Step 1</span>
+            <div class="step-title">Enter Today's Focus Hours</div>
+            <div class="step-desc">Set your available study time (e.g. 240 mins = 4 hours).</div>
+          </div>
+          <div class="step-card">
+            <span class="step-num">Step 2</span>
+            <div class="step-title">Generate Schedule</div>
+            <div class="step-desc">Click "Generate Daily Schedule" to build your timetable.</div>
+          </div>
+          <div class="step-card">
+            <span class="step-num">Step 3</span>
+            <div class="step-title">Follow Focus & Rest Blocks</div>
+            <div class="step-desc">Execute time blocks with automatic 10-minute break buffers.</div>
+          </div>
+        </div>
+
+        <div class="tab-footer-tips">
+          <span>⏱️ <strong>Capacity Rule:</strong> Planned study blocks will never exceed your total available daily
+            focus limit.</span>
+          <span>☕ <strong>Burnout Control:</strong> 10-minute rest buffers are inserted between consecutive study
+            blocks.</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="display: flex; gap: 1rem; align-items: flex-end; margin-bottom: 1.5rem; flex-wrap: wrap;">
+          <div class="form-group" style="flex: 1; min-width: 240px; margin: 0;">
+            <label class="form-label">Available Focus Capacity Today (Minutes)</label>
+            <input type="number" id="planner-available-mins" class="form-input" value="240" min="30" max="720">
+          </div>
+          <button id="btn-generate-plan" class="btn btn-primary"><i data-lucide="clock"></i> Generate Daily
+            Schedule</button>
+        </div>
+
+        <div id="planner-timeline" style="margin-top: 1.5rem;">
+          <!-- Dynamically populated schedule -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. FOCUS MODE VIEW -->
+    <section id="view-focus" class="view-section">
+      <!-- GUEST DEMO MODE AUTH BANNER -->
+      <div class="auth-guest-banner hidden" style="background: rgba(10,22,40,0.85); border: 1px solid rgba(0,212,255,0.3); border-radius: var(--radius-md); padding: 0.75rem 1.25rem; margin-bottom: 1.25rem; font-size: 0.88rem; color: rgba(232,244,248,0.9); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+        <span>🔒 <strong>Guest Demo Mode:</strong> Data is currently stored locally. Sign in or register to sync your focus timer logs directly to Supabase Cloud.</span>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-secondary" style="padding: 0.35rem 0.85rem; font-size: 0.8rem;" onclick="openAuthModal('login')"><i data-lucide="log-in"></i> Sign In</button>
+          <button class="btn btn-primary" style="padding: 0.35rem 0.85rem; font-size: 0.8rem;" onclick="openAuthModal('register')"><i data-lucide="user-plus"></i> Register</button>
+        </div>
+      </div>
+
+      <!-- STEP-BY-STEP TAB HEADER CARD -->
+      <div class="tab-header-card">
+        <div class="tab-header-top">
+          <div>
+            <span class="tab-header-tag"><i data-lucide="timer"></i> Pomodoro Focus Timer</span>
+            <h2 class="tab-header-title">Focus Sprint Timer & Study Session Tracker</h2>
+          </div>
+          <div class="tab-badges">
+            <span class="badge badge-low"><i data-lucide="play"></i> 25-Min Study Sprint</span>
+            <span class="badge badge-high"><i data-lucide="database"></i> Auto-Logged Stats</span>
+          </div>
+        </div>
+
+        <p class="tab-header-desc">
+          Execute 25-minute uninterrupted deep-work study sprints. Start, pause, or complete sessions to automatically
+          log your actual focused minutes directly into your personal database and study analytics.
+        </p>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-num">Step 1</span>
+            <div class="step-title">Start 25-Min Sprint</div>
+            <div class="step-desc">Click "Start Session" to launch your focus timer sprint.</div>
+          </div>
+          <div class="step-card">
+            <span class="step-num">Step 2</span>
+            <div class="step-title">Stay Deeply Focused</div>
+            <div class="step-desc">Avoid distractions until your 25-minute focus period ends.</div>
+          </div>
+          <div class="step-card">
+            <span class="step-num">Step 3</span>
+            <div class="step-title">Complete & Save</div>
+            <div class="step-desc">Click "Complete Session" to record focus hours in your stats.</div>
+          </div>
+        </div>
+
+        <div class="tab-footer-tips">
+          <span>🎯 <strong>Session Rule:</strong> Completed focus sessions automatically update your weekly focus hours
+            stat.</span>
+          <span>📈 <strong>Analytics Feed:</strong> Accumulated focus time feeds directly into your Productivity Score
+            formula.</span>
+        </div>
+      </div>
+
+      <div class="card" style="text-align: center; max-width: 650px; margin: 0 auto;">
+        <h3 style="color: var(--snow); justify-content: center; display: flex; align-items: center; gap: 0.5rem;"><i
+            data-lucide="play-circle"></i> Active Focus Session</h3>
+        <p class="card-subtitle">25-minute Pomodoro focus sprint timer.</p>
+
+        <div class="timer-display" id="focus-timer-display">25:00</div>
+
+        <div class="flex-between" style="justify-content: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+          <button id="btn-timer-start" class="btn btn-primary"><i data-lucide="play"></i> Start Session</button>
+          <button id="btn-timer-pause" class="btn btn-secondary hidden"><i data-lucide="pause"></i> Pause</button>
+          <button id="btn-timer-reset" class="btn btn-secondary"><i data-lucide="rotate-ccw"></i> Reset</button>
+          <button id="btn-timer-complete" class="btn btn-primary"
+            style="background: var(--violet-sky); color: white;"><i data-lucide="check-circle"></i> Complete
+            Session</button>
+        </div>
+
+        <div style="text-align: left; border-top: 1px solid var(--surface-border); padding-top: 1rem;">
+          <h4 style="color: var(--snow); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;"><i
+              data-lucide="history"></i> Recent Focus Sessions</h4>
+          <div id="focus-history-list"
+            style="font-family: var(--font-mono); font-size: 0.85rem; color: rgba(232,244,248,0.7);">
+            <!-- History items -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. PROJECTS & GOALS VIEW -->
+    <section id="view-projects" class="view-section">
+      <!-- GUEST DEMO MODE AUTH BANNER -->
+      <div class="auth-guest-banner hidden" style="background: rgba(10,22,40,0.85); border: 1px solid rgba(0,212,255,0.3); border-radius: var(--radius-md); padding: 0.75rem 1.25rem; margin-bottom: 1.25rem; font-size: 0.88rem; color: rgba(232,244,248,0.9); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+        <span>🔒 <strong>Guest Demo Mode:</strong> Data is currently stored locally. Sign in or register to sync your projects directly to Supabase Cloud.</span>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-secondary" style="padding: 0.35rem 0.85rem; font-size: 0.8rem;" onclick="openAuthModal('login')"><i data-lucide="log-in"></i> Sign In</button>
+          <button class="btn btn-primary" style="padding: 0.35rem 0.85rem; font-size: 0.8rem;" onclick="openAuthModal('register')"><i data-lucide="user-plus"></i> Register</button>
+        </div>
+      </div>
+
+      <!-- STEP-BY-STEP TAB HEADER CARD -->
+      <div class="tab-header-card">
+        <div class="tab-header-top">
+          <div>
+            <span class="tab-header-tag"><i data-lucide="target"></i> Project Subtask Engine</span>
+            <h2 class="tab-header-title">Project Decomposition & Goal Progress Tracker</h2>
+          </div>
+          <div class="tab-badges">
+            <span class="badge badge-low"><i data-lucide="bar-chart"></i> Auto Progress %</span>
+            <span class="badge badge-medium"><i data-lucide="layers"></i> Subtask Steps</span>
+          </div>
+        </div>
+
+        <p class="tab-header-desc">
+          Break large student projects or group assignments into small, actionable subtasks. As you mark subtasks
+          complete, your project progress bar automatically updates from 0% to 100%.
+        </p>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-num">Step 1</span>
+            <div class="step-title">Create Main Project</div>
+            <div class="step-desc">Set up your project goal (e.g. DBMS Major Project).</div>
+          </div>
+          <div class="step-card">
+            <span class="step-num">Step 2</span>
+            <div class="step-title">Add Subtask Steps</div>
+            <div class="step-desc">Divide the project into smaller actionable steps.</div>
+          </div>
+          <div class="step-card">
+            <span class="step-num">Step 3</span>
+            <div class="step-title">Check Off Progress</div>
+            <div class="step-desc">Check subtasks off to watch progress % automatically update.</div>
+          </div>
+        </div>
+
+        <div class="tab-footer-tips">
+          <span>📊 <strong>Progress Formula:</strong> Progress % = (Completed Subtasks / Total Subtasks) × 100.</span>
+          <span>🎯 <strong>Status Auto-Update:</strong> Status updates automatically: Not Started &rarr; In Progress
+            &rarr; Completed.</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="color: var(--snow); margin-bottom: 1rem;">Active Student Projects</h3>
+        <div id="projects-container" style="display: grid; gap: 1.25rem;">
+          <!-- Dynamically populated projects -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. HABIT TRACKER VIEW -->
+    <section id="view-habits" class="view-section">
+      <!-- GUEST DEMO MODE AUTH BANNER -->
+      <div class="auth-guest-banner hidden" style="background: rgba(10,22,40,0.85); border: 1px solid rgba(0,212,255,0.3); border-radius: var(--radius-md); padding: 0.75rem 1.25rem; margin-bottom: 1.25rem; font-size: 0.88rem; color: rgba(232,244,248,0.9); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+        <span>🔒 <strong>Guest Demo Mode:</strong> Data is currently stored locally. Sign in or register to sync your habit streaks directly to Supabase Cloud.</span>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-secondary" style="padding: 0.35rem 0.85rem; font-size: 0.8rem;" onclick="openAuthModal('login')"><i data-lucide="log-in"></i> Sign In</button>
+          <button class="btn btn-primary" style="padding: 0.35rem 0.85rem; font-size: 0.8rem;" onclick="openAuthModal('register')"><i data-lucide="user-plus"></i> Register</button>
+        </div>
+      </div>
+      <!-- STEP-BY-STEP TAB HEADER CARD -->
+      <div class="tab-header-card">
+        <div class="tab-header-top">
+          <div>
+            <span class="tab-header-tag"><i data-lucide="flame"></i> Daily Routine Streak Engine</span>
+            <h2 class="tab-header-title">Daily Study Habits & Routine Streak Tracker</h2>
+          </div>
+          <div class="tab-badges">
+            <span class="badge badge-low"><i data-lucide="globe"></i> Timezone Aware</span>
+            <span class="badge badge-critical"><i data-lucide="zap"></i> Streak Counter</span>
+          </div>
+        </div>
+
+        <p class="tab-header-desc">
+          Build consistent daily study routines like daily coding, reading, or exercise. Check off your habits every day
+          to build long-term consistency streaks.
+        </p>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-num">Step 1</span>
+            <div class="step-title">Choose Daily Routines</div>
+            <div class="step-desc">Define habits you want to build (e.g. 30 Mins Coding).</div>
+          </div>
+          <div class="step-card">
+            <span class="step-num">Step 2</span>
+            <div class="step-title">Log Daily Completion</div>
+            <div class="step-desc">Mark your habit done every day to grow your streak.</div>
+          </div>
+          <div class="step-card">
+            <span class="step-num">Step 3</span>
+            <div class="step-title">Keep the Chain Intact</div>
+            <div class="step-desc">Maintain consecutive days to maximize your streak score.</div>
+          </div>
+        </div>
+
+        <div class="tab-footer-tips">
+          <span>🔥 <strong>Streak Rule:</strong> Consecutive daily completions increment your active streak
+            counter.</span>
+          <span>📅 <strong>Reset Warning:</strong> Missing a day resets active streak calculations back to 0.</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="color: var(--snow); margin-bottom: 1rem;">Daily Routine Habits</h3>
+        <div id="habits-container" class="task-grid">
+          <!-- Dynamically populated habits -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. ANALYTICS & PRODUCTIVITY DNA VIEW -->
+    <section id="view-analytics" class="view-section">
+      <!-- GUEST DEMO MODE AUTH BANNER -->
+      <div class="auth-guest-banner hidden" style="background: rgba(10,22,40,0.85); border: 1px solid rgba(0,212,255,0.3); border-radius: var(--radius-md); padding: 0.75rem 1.25rem; margin-bottom: 1.25rem; font-size: 0.88rem; color: rgba(232,244,248,0.9); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+        <span>🔒 <strong>Guest Demo Mode:</strong> Data is currently stored locally. Sign in or register to sync your analytics metrics directly to Supabase Cloud.</span>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-secondary" style="padding: 0.35rem 0.85rem; font-size: 0.8rem;" onclick="openAuthModal('login')"><i data-lucide="log-in"></i> Sign In</button>
+          <button class="btn btn-primary" style="padding: 0.35rem 0.85rem; font-size: 0.8rem;" onclick="openAuthModal('register')"><i data-lucide="user-plus"></i> Register</button>
+        </div>
+      </div>
+      <!-- STEP-BY-STEP TAB HEADER CARD -->
+      <div class="tab-header-card">
+        <div class="tab-header-top">
+          <div>
+            <span class="tab-header-tag"><i data-lucide="bar-chart-2"></i> Real Study Analytics</span>
+            <h2 class="tab-header-title">Productivity Score & Execution Analytics</h2>
+          </div>
+          <div class="tab-badges">
+            <span class="badge badge-low"><i data-lucide="database"></i> Verified Database Data</span>
+            <span class="badge badge-medium"><i data-lucide="activity"></i> Honest Metrics</span>
+          </div>
+        </div>
+
+        <p class="tab-header-desc">
+          View real statistics calculated strictly from your completed tasks, focus timer hours, and habit streaks.
+          Understand your true study habits with honest 0–100 productivity scores.
+        </p>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-num">Step 1</span>
+            <div class="step-title">Use Hub Daily</div>
+            <div class="step-desc">Complete tasks, run focus timers, and log daily habits.</div>
+          </div>
+          <div class="step-card">
+            <span class="step-num">Step 2</span>
+            <div class="step-title">Check Your 0–100 Score</div>
+            <div class="step-desc">Review your overall score across completion, focus & goals.</div>
+          </div>
+          <div class="step-card">
+            <span class="step-num">Step 3</span>
+            <div class="step-title">Read Productivity DNA</div>
+            <div class="step-desc">Discover your real execution traits and areas to improve.</div>
+          </div>
+        </div>
+
+        <div class="tab-footer-tips">
+          <span>📊 <strong>Score Formula:</strong> Task Completion (35%) + Focus Hours (25%) + Risk Management (20%) +
+            Goals (20%).</span>
+          <span>🧬 <strong>No Fake Tests:</strong> Analyzes real database activity records without pseudo-scientific
+            quizzes.</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value" id="stat-productivity-score">--</div>
+            <div class="stat-label">Productivity Score</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="stat-completed-tasks">0</div>
+            <div class="stat-label">Tasks Completed</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="stat-focus-hours">0h</div>
+            <div class="stat-label">Focus Time</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="stat-habit-streak">0 days</div>
+            <div class="stat-label">Active Habit Streak</div>
+          </div>
+        </div>
+
+        <div id="dna-summary-container" class="card"
+          style="background: rgba(5,11,26,0.6); border-color: rgba(123,47,190,0.3);">
+          <h3 style="color: var(--snow); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;"><i
+              data-lucide="dna"></i> Productivity DNA Profile</h3>
+          <p id="dna-summary-text" style="font-size: 0.9rem; color: rgba(232,244,248,0.85);"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. AI ASSISTANT VIEW -->
+    <section id="view-assistant" class="view-section">
+      <!-- GUEST DEMO MODE AUTH BANNER -->
+      <div class="auth-guest-banner hidden" style="background: rgba(10,22,40,0.85); border: 1px solid rgba(0,212,255,0.3); border-radius: var(--radius-md); padding: 0.75rem 1.25rem; margin-bottom: 1.25rem; font-size: 0.88rem; color: rgba(232,244,248,0.9); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+        <span>🔒 <strong>Guest Demo Mode:</strong> Data is currently stored locally. Sign in or register to save your AI assistant history directly to Supabase Cloud.</span>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-secondary" style="padding: 0.35rem 0.85rem; font-size: 0.8rem;" onclick="openAuthModal('login')"><i data-lucide="log-in"></i> Sign In</button>
+          <button class="btn btn-primary" style="padding: 0.35rem 0.85rem; font-size: 0.8rem;" onclick="openAuthModal('register')"><i data-lucide="user-plus"></i> Register</button>
+        </div>
+      </div>
+      <!-- STEP-BY-STEP TAB HEADER CARD -->
+      <div class="tab-header-card">
+        <div class="tab-header-top">
+          <div>
+            <span class="tab-header-tag"><i data-lucide="bot"></i> Gemini AI Study Assistant</span>
+            <h2 class="tab-header-title">Gemini Productivity Q&A & Exam Study Planner</h2>
+          </div>
+          <div class="tab-badges">
+            <span class="badge badge-low"><i data-lucide="sparkles"></i> Context-Aware Q&A</span>
+            <span class="badge badge-medium"><i data-lucide="book-open"></i> Exam Study Planner</span>
+          </div>
+        </div>
+
+        <p class="tab-header-desc">
+          Get instant help from Gemini AI. Ask questions about your active workload or generate custom step-by-step
+          study blocks for upcoming exams based on your exam date and daily free hours.
+        </p>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-num">Step 1</span>
+            <div class="step-title">Ask AI Questions</div>
+            <div class="step-desc">Ask how to organize your tasks or prepare for exams.</div>
+          </div>
+          <div class="step-card">
+            <span class="step-num">Step 2</span>
+            <div class="step-title">Set Exam Date</div>
+            <div class="step-desc">Enter your subject name and upcoming exam date.</div>
+          </div>
+          <div class="step-card">
+            <span class="step-num">Step 3</span>
+            <div class="step-title">Get Personal Study Plan</div>
+            <div class="step-desc">Receive time-blocked study suggestions generated for you.</div>
+          </div>
+        </div>
+
+        <div class="tab-footer-tips">
+          <span>💬 <strong>Context-Aware:</strong> AI reads your active workload to provide relevant advice.</span>
+          <span>📚 <strong>Study Blocks:</strong> Generates structured preparation schedules before exam
+            deadlines.</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+          <div>
+            <h4 style="color: var(--snow); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;"><i
+                data-lucide="message-square"></i> Ask Assistant</h4>
+            <div class="form-group">
+              <input type="text" id="assistant-question-input" class="form-input"
+                placeholder="e.g. How should I allocate time for DBMS exam tomorrow?">
+            </div>
+            <button id="btn-ask-assistant" class="btn btn-primary"><i data-lucide="sparkles"></i> Ask Assistant</button>
+
+            <div id="assistant-answer-box" class="card mt-2 hidden" style="background: rgba(5,11,26,0.8);">
+              <h5 style="color: var(--aurora-green); margin-bottom: 0.5rem;">Assistant Response</h5>
+              <div id="assistant-answer-text" style="font-size: 0.9rem;"></div>
+            </div>
+          </div>
+
+          <div>
+            <h4 style="color: var(--snow); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;"><i
+                data-lucide="book-open"></i> Exam Study Plan Generator</h4>
+            <div class="form-group">
+              <input type="text" id="study-subject-input" class="form-input" placeholder="Subject / Course Name">
+            </div>
+            <div class="form-group">
+              <input type="date" id="study-exam-date-input" class="form-input">
+            </div>
+            <button id="btn-generate-study-plan" class="btn btn-secondary"><i data-lucide="calendar"></i> Generate Study
+              Plan</button>
+
+            <div id="study-plan-box" class="card mt-2 hidden" style="background: rgba(5,11,26,0.8);">
+              <h5 style="color: var(--ice-cyan); margin-bottom: 0.5rem;">Suggested Study Blocks</h5>
+              <div id="study-blocks-list" style="font-size: 0.85rem;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Create Task Modal -->
+  <div class="modal-overlay" id="modal-create-task">
+    <div class="modal-box">
+      <h3 style="color: var(--snow); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.4rem;"><i
+          data-lucide="plus-circle"></i> Create New Task</h3>
+
+      <div class="form-group">
+        <label class="form-label">Task Title</label>
+        <input type="text" id="task-input-title" class="form-input" placeholder="e.g. DBMS Chapter 4 Notes">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Category</label>
+        <select id="task-input-category" class="form-select">
+          <option value="Academic">Academic</option>
+          <option value="Project">Project</option>
+          <option value="Career">Career</option>
+          <option value="Personal">Personal</option>
+          <option value="Health">Health</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Priority Level</label>
+        <select id="task-input-priority" class="form-select">
+          <option value="Low">Low</option>
+          <option value="Medium" selected>Medium</option>
+          <option value="High">High</option>
+          <option value="Critical">Critical</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Deadline</label>
+        <input type="date" id="task-input-deadline" class="form-input">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Estimated Time (Minutes)</label>
+        <input type="number" id="task-input-estimated" class="form-input" value="45" min="15" step="15">
+      </div>
+
+      <div class="flex-between mt-2">
+        <button id="btn-close-create-task" class="btn btn-secondary">Cancel</button>
+        <button id="btn-save-task" class="btn btn-primary"><i data-lucide="plus"></i> Create Task</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Auth Modal -->
+  <div class="modal-overlay" id="modal-auth">
+    <div class="modal-box">
+      <h3 style="color: var(--snow); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.4rem;"
+        id="auth-modal-title"><i data-lucide="user-check"></i> Sign In / Register</h3>
+
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" id="auth-input-email" class="form-input" placeholder="student@university.edu">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" id="auth-input-password" class="form-input" placeholder="••••••••">
+      </div>
+
+      <div id="auth-error-msg" style="color: var(--glacier-pink); font-size: 0.85rem; margin-bottom: 1rem;"
+        class="hidden"></div>
+
+      <div class="flex-between mt-2">
+        <button id="btn-auth-register" class="btn btn-secondary"><i data-lucide="user-plus"></i> Register</button>
+        <button id="btn-auth-login" class="btn btn-primary"><i data-lucide="log-in"></i> Login</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+
+</html>
